@@ -1,0 +1,31 @@
+{
+  "name": "allballcallserver",
+  "version": "1.0.0",
+  "description": "A server that will be used in my web application AllBallCall that utilizes multiple tables. ",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alex-Lee-Myers/AllBallCallServer.git"
+  },
+  "author": "Alex Lee Myers",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "nodemon": "^2.0.7",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.6.2"
+  },
+  "bugs": {
+    "url": "https://github.com/Alex-Lee-Myers/AllBallCallServer/issues"
+  },
+  "homepage": "https://github.com/Alex-Lee-Myers/AllBallCallServer#readme"
+}
