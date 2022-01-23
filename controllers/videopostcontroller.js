@@ -8,7 +8,8 @@ console.log(VideoPostModel);
 router.post("/content", validateJWT, async (req, res) => {
     const { 
         videoTitle, 
-        videoLink, 
+        videoLink,
+        videoOwner, 
         thumbnailImage,
         playersHighlighted, 
         teamsFeatured, 
@@ -21,7 +22,7 @@ router.post("/content", validateJWT, async (req, res) => {
         adminDelete
     } =
         req.body.videopost;
-    const { id } = req.user;
+    // const { uuid } = req.user;
 
     try {
     const videoPostSuccess = await VideoPostModel.create
@@ -29,7 +30,7 @@ router.post("/content", validateJWT, async (req, res) => {
             videoID: uuid.v4(),
             videoTitle: videoTitle,
             videoLink: videoLink,
-            videoOwner: id,
+            videoOwner: req.user.uuid,
             thumbnailImage: thumbnailImage,
             playersHighlighted: playersHighlighted,
             teamsFeatured: teamsFeatured,
@@ -47,13 +48,14 @@ router.post("/content", validateJWT, async (req, res) => {
     });
     } catch (err) {
     res.status(500).json({
+        messageError: `Error message is: ${err}`,
         message: "Failed to create the Video Post!",
     });
     }
 }
 );
 
-router.get("/", validateJWT, async (req, res) => {
+router.get("/allUserVideos", validateJWT, async (req, res) => {
     const { id } = req.user;
     try {
     const query = {

@@ -2,11 +2,6 @@ const { DataTypes } = require("sequelize");
 const db = require("../db");
 
 const VideoPost = db.define("videopost", {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        allowNull: false,
-    },
     videoID: {
         type: DataTypes.UUID,
         // primaryKey: true,
