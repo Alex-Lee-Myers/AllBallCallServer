@@ -15,20 +15,20 @@ app.use(middleware.CORS);
 app.use(express.json());
 
 // endpoints
-app.use('/auth', controllers.usercontroller);
+app.use('/users', controllers.usercontroller);
 app.use(middleware.validateSession);
-app.use('/videopost', controllers.videopostcontroller);
+app.use('/videos', controllers.videopostcontroller);
 app.use('/comments', controllers.commentscontroller);
 
 // database auth & sync
 // try {
     dbConnection
         .authenticate()
-        .then(async () => await dbConnection.sync(/*  {force: true} */)) // force: true will drop all tables in pgAdmin and resync them. This is necessary after you make a change to a model, and need to sync any new table headers to the database.
+        .then(async () => await dbConnection.sync())
         .then(() => {
             app.listen(process.env.PORT, () => {
                 console.log(`[SERVER]: App is listening on ${process.env.PORT}`);
             });
         })
 // }
-.catch (error => console.log(`[SERVER]: ${error}`)); 
+.catch (error => console.log(`[SERVER]: ${error}`))

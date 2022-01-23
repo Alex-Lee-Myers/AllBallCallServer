@@ -2,32 +2,48 @@ const Express = require("express");
 const router = Express.Router();
 let validateJWT = require("../middleware/validate-session");
 const { VideoPostModel } = require("../models");
+const uuid = require("uuid");
 
-router.post("/", validateJWT, async (req, res) => {
-    const { videoID, videoTitle, videoLink, videoOwner, thumbnailImage, playersHighlighted, teamsFeatured, tags, gameDate, nbaSeason, isPlayoffs, clutch, adminHighlighted, adminDelete } =
-        req.body.videoPost;
-    const { id } = req.user;
-    const videoPostEntry = {
-        videoID,
-        videoTitle,
-        videoLink,
-        videoOwner: id,
+console.log(VideoPostModel);
+router.post("/content", validateJWT, async (req, res) => {
+    const { 
+        videoTitle, 
+        videoLink, 
         thumbnailImage,
-        playersHighlighted,
-        teamsFeatured,
-        tags,
-        gameDate,
-        nbaSeason,
-        isPlayoffs,
+        playersHighlighted, 
+        teamsFeatured, 
+        tags, 
+        gameDate, 
+        nbaSeason, 
+        isPlayoffs, 
         clutch,
         adminHighlighted,
-        adminDelete,
-    };
+        adminDelete
+    } =
+        req.body.videopost;
+    const { id } = req.user;
+
     try {
-    const videoPost = await VideoPostModel.create(videoPostEntry);
+    const videoPostSuccess = await VideoPostModel.create
+    ({
+            videoID: uuid.v4(),
+            videoTitle,
+            videoLink,
+            videoOwner: id,
+            thumbnailImage,
+            playersHighlighted,
+            teamsFeatured,
+            tags,
+            gameDate,
+            nbaSeason,
+            isPlayoffs,
+            clutch,
+            adminHighlighted,
+            adminDelete
+        });
     res.status(201).json({
         message: "Video Post created!",
-        videoPost,
+        videoPostSuccess,
     });
     } catch (err) {
     res.status(500).json({
