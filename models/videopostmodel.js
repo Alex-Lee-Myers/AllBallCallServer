@@ -134,6 +134,3 @@ const VideoPost = db.define("videopost", {
 });
 
 module.exports = VideoPost;
-
-//hasMany
-//user
