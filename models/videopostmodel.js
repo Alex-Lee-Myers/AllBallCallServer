@@ -126,6 +126,14 @@ const VideoPost = db.define("videopost", {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
+    // comments which is associated with a videopost and is an array of objects with a commentText, commentDate, commentUser, commentVideoID, adminDelete, and badActor
+    comments: {
+        type: DataTypes.ARRAY(DataTypes.JSON),
+        allowNull: true,
+    }  
 });
 
 module.exports = VideoPost;
+
+//hasMany
+//user

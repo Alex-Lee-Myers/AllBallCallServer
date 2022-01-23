@@ -2,11 +2,6 @@ const { DataTypes } = require("sequelize");
 const db = require("../db");
 
 const Comments = db.define("comments", {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        allowNull: false,
-    },
     commentID: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
