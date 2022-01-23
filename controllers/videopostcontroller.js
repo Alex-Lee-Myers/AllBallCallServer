@@ -27,23 +27,23 @@ router.post("/content", validateJWT, async (req, res) => {
     const videoPostSuccess = await VideoPostModel.create
     ({
             videoID: uuid.v4(),
-            videoTitle,
-            videoLink,
+            videoTitle: videoTitle,
+            videoLink: videoLink,
             videoOwner: id,
-            thumbnailImage,
-            playersHighlighted,
-            teamsFeatured,
-            tags,
-            gameDate,
-            nbaSeason,
-            isPlayoffs,
-            clutch,
-            adminHighlighted,
-            adminDelete
+            thumbnailImage: thumbnailImage,
+            playersHighlighted: playersHighlighted,
+            teamsFeatured: teamsFeatured,
+            tags: tags,
+            gameDate: gameDate,
+            nbaSeason: nbaSeason,
+            isPlayoffs: isPlayoffs,
+            clutch: clutch,
+            adminHighlighted: adminHighlighted,
+            adminDelete: adminDelete
         });
     res.status(201).json({
         message: "Video Post created!",
-        videoPostSuccess,
+        videopost: videoPostSuccess,
     });
     } catch (err) {
     res.status(500).json({
