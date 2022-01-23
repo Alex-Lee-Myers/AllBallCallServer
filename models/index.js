@@ -1,5 +1,7 @@
-// const db = require('../db');
+const db = require('../db');
 
-// const UsersModel = require('./users');
-// const PostsModel = require('./posts');
-// const CommentsModel = require('./comments');
+const UserModel = require('./usermodel');
+const VideoPostModel = require('./videopostmodel');
+const CommentsModel = require('./commentsmodel');
+
+module.exports = {UserModel, VideoPostModel, CommentsModel};

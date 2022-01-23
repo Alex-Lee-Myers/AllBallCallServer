@@ -1,8 +1,12 @@
-const {Sequelize} = require('sequelize');
+const Sequelize = require('sequelize');
 
-const seqeulize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USERNAME, process.env.DATABASE_PASSWORD, {
-    host: process.env.DATABASE_HOST,
-    dialect: process.env.DATABASE_DIALECT
-})
+// const seqeulize = new Sequelize(
+//     process.env.DATABASE_URL, {
+//         dialect: 'postgres',
+// })
 
-module.exports = seqeulize;
+const db = new Sequelize(`postgres://postgres:hellomoto@localhost:5432/AllBallCall`, {
+    dialect: 'postgres',
+    });
+
+module.exports = db;

@@ -1,23 +1,50 @@
-// const { DataTypes } = require("sequelize");
-// const db = require('../db');
+const { DataTypes } = require("sequelize");
+// import uuid
+const uuid = require("uuid");
+const db = require("../db");
 
-// const Users = db.define("users", {
-//   id: {
-//     type: DataTypes.UUID,
-//     primaryKey: true,
-//     defaultValue: DataTypes.UUIDV4,
-//     allowNull: false,
-//   },
-//   username: {
-//     type: DataTypes.STRING,
-//     required: true,
-//     unique: true,
-//     allowNull: false,
-//   },
-//   password: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-// });
+const User = db.define("user", {
+    uuid: {
+        type: DataTypes.UUID,
+        // primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+    },
+    username: {
+        type: DataTypes.STRING,
+        required: true,
+        unique: true,
+        allowNull: false,
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+    },
+    passwordhash: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    accountResetQuestion1: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    accountResetQuestion2: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    accountResetAnswer1: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    accountResetAnswer2: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
+});
 
-// module.exports = Users;
+module.exports = User;

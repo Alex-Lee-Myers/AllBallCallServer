@@ -1,109 +1,88 @@
-// const router = require('express').Router();
-// const { models } = require('../models');
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-// const { UniqueConstraintError } = require('sequelize/lib/errors');
+const express = require("express");
+const router = express.Router();
+const { UserModel } = require("../models");
+const { UniqueConstraintError } = require("sequelize");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+// import uuid
+const uuid = require("uuid");
 
-// router.post('/signup', async (req, res) =>{
 
-//     const {username, password} = req.body.user;
+router.post("/register", async (req, res) => {
+    const { username, email, passwordhash, isAdmin, accountResetQuestion1, accountResetQuestion2, accountResetAnswer1, accountResetAnswer2} = req.body.user;
+    const salt = bcrypt.genSaltSync(12);
+    const pwHashed = bcrypt.hashSync(passwordhash, salt);
 
-//     try {
-//         await models.UsersModel.create({
-//             username: username,
-//             password: bcrypt.hashSync(password, 10)
-//         })
-//         .then(
-//             user => {
-//                 let token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: 60*60*24});
-//                 res.status(201).json({
-//                     user: user,
-//                     message: 'user created',
-//                     sessionToken: `Bearer ${token}`
-//                 });
-//             }
-//         )
-//     } catch (err) {
-//         if (err instanceof UniqueConstraintError) {
-//             res.status(409).json({
-//                 message: 'Username already in use'
-//             });
-//         } else {
-//             res.status(500).json({
-//                 error: `Failed to register user: ${err}`
-//             });
-//         };
-//     };
-// });
+    try {
+        const User = await UserModel.create({
+            uuid: uuid.v4(),
+            username: username,
+            email: email,
+            passwordhash: pwHashed,
+            isAdmin: isAdmin,
+            accountResetQuestion1: accountResetQuestion1,
+            accountResetQuestion2: accountResetQuestion2,
+            accountResetAnswer1: accountResetAnswer1,
+            accountResetAnswer2: accountResetAnswer2
+        });
 
-// router.post('/login', async (req, res) => {
+        let token = jwt.sign({ id: User.id }, process.env.JWT_SECRET, {
+        expiresIn: 60 * 60 * 24,
+        });
+        res.status(201).json({
+        message: "Registration complete!",
+        user: User,
+        sessionToken: token,
+        });
+    } catch (err) {
+        if (err instanceof UniqueConstraintError) {
+        res.status(409).json({
+            message: "Username already in use!",
+        });
+    } else {
+        res.status(500).json({
+            message: "Failed to register the User!",
+        });
+        }
+    }
+    });
 
-//     const { username, password } = req.body.user;
+router.post("/login", async (req, res) => {
 
-//     try {
-//         await models.UsersModel.findOne({
-//             where: {
-//                 username: username
-//             }
-//         })
-//         .then(
-//             user => {
-//                 if (user) {
-//                     bcrypt.compare(password, user.password, (err, matches) => {
-//                         if (matches) {
-//                             let token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: 60*60*24})
-//                             res.json({
-//                                 user: user,
-//                                 message: 'logged in',
-//                                 sessionToken: `Bearer ${token}`
-//                             })
-//                         } else {
-//                             res.status(502).send({
-//                                 error: 'bad gateway'
-//                             })
-//                         }
-//                     })
-//                 } else {
-//                     res.status(500).send({
-//                         error: 'failed to authenticate'
-//                     })
-//                 }
-//             }
-//         )
-//     } catch (err) {
-//         res.status(501).send({
-//             error: 'server does not support this functionality'
-//         })
-//     }
-// })
+    try {
+        const { username, passwordhash } = req.body.user
+        const loginUser = await UserModel.findOne({
+        where: {
+            username,
+        }});
 
-// router.get('/userinfo', async (req, res) => {
+        if (loginUser) {
+        let passwordComparison = await bcrypt.compare(
+            passwordhash,
+            loginUser.passwordhash
+        );
 
-//     try {
-//         await models.UsersModel.findAll({
-//             include: [
-//                 {
-//                     model: models.PostsModel,
-//                     include: [
-//                         {
-//                             model: models.CommentsModel
-//                         }
-//                     ]
-//                 }
-//             ]
-//         })
-//         .then(
-//             users => {
-//                 res.status(200).json({
-//                     users: users
-//                 });
-//             }
-//         )
-//     } catch (err) {
-//         res.status(500).json({
-//             error: `Failed to retrieve users: ${err}`
-//         });
-//     };
-// });
+        if (passwordComparison) {
+            let token = jwt.sign({ id: loginUser.id }, process.env.JWT_SECRET, {
+            expiresIn: 60 * 60 * 24,
+            });
 
-// module.exports = router;
+            res.status(200).json({
+            user: loginUser,
+            message: "Login successful!",
+            sessionToken: token,
+            });
+        } else {
+            res.status(401).json({
+            message: "Incorrect username or password",
+            });
+        }
+        }
+    } catch (error) {
+        res.status(500).json({
+        message: "Failed to login user!",
+        });
+    }
+});
+
+module.exports = router;
