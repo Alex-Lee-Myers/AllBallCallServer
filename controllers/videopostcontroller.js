@@ -58,7 +58,7 @@ router.post("/content", validateJWT, async (req, res) => {
 }
 );
 
-//! Get alll VideoPosts from a specific user
+//! Get all VideoPosts from a specific user
 router.get("/content/:username", validateJWT, async (req, res) => {
     const { username } = req.params;
     try {
@@ -68,25 +68,25 @@ router.get("/content/:username", validateJWT, async (req, res) => {
             },
         });
         res.status(200).json({
-            message: "Video Posts successfully retrieved!",
+            message: `All of ${username}'s videos were successfully retrieved!`,
             videoposts: videoPosts,
         });
     } catch (err) {
         res.status(500).json({
-            message: "Failed to retrieve Video Posts!",
+            message: `${username}'s videos could not be retrieved!`,
             errorMessage: err
         });
     }
 });
 
 //! Get a specific VideoPost from a specific user
-router.get("/content/:username/:id", validateJWT, async (req, res) => {
-    const { username, id } = req.params;
+router.get("/content/:username/:videoID", validateJWT, async (req, res) => {
+    const { username, videoID } = req.params;
     try {
         const videoPost = await VideoPostModel.findOne({
             where: {
                 username: username,
-                id: id,
+                videoID: videoID
             },
         });
         res.status(200).json({
@@ -154,69 +154,66 @@ router.put("/:username/:videoID", validateJWT, async (req, res) => {
 });
 
 //! Update an individual user's video post (admin)
-router.put("/:username/:videoID/:videoOwner", validateJWT, async (req, res) => {
-    const {
-        videoTitle,
-        videoLink,
-        thumbnailImage,
-        playersHighlighted,
-        teamsFeatured,
-        tags,
-        gameDate,
-        nbaSeason,
-        isPlayoffs,
-        clutch,
-        adminHighlighted,
-        adminDelete
-    } =
-        req.body.videopost;
+// router.put("/:username/:videoID/", validateJWT, async (req, res) => {
+//     const {
+//         videoTitle,
+//         videoLink,
+//         thumbnailImage,
+//         playersHighlighted,
+//         teamsFeatured,
+//         tags,
+//         gameDate,
+//         nbaSeason,
+//         isPlayoffs,
+//         clutch,
+//         adminHighlighted,
+//         adminDelete
+//     } =
+//         req.body.videopost;
 
-    //? VideoID is the primary key of the table. Needed to grab for the user's video post in the where clause.
-    const videoID = req.params.videoID;
-    const videoOwner = req.params.videoOwner;
-    const username = req.params.username;
+//     //? VideoID is the primary key of the table. Needed to grab for the user's video post in the where clause.
+//     const videoID = req.params.videoID;
+//     const username = req.params.username;
 
-    const updateVideoPost = await VideoPostModel.update(
-        {
-            videoTitle: videoTitle,
-            videoLink: videoLink,
-            thumbnailImage: thumbnailImage,
-            playersHighlighted: playersHighlighted,
-            teamsFeatured: teamsFeatured,
-            tags: tags,
-            gameDate: gameDate,
-            nbaSeason: nbaSeason,
-            isPlayoffs: isPlayoffs,
-            clutch: clutch,
-            adminHighlighted: adminHighlighted,
-            adminDelete: adminDelete
-        },
-        {
-            where: {
-                videoID: videoID,
-                videoOwner: videoOwner,
-                username: username
-            }
-        }
-    );
-    res.status(200).json({
-        message: "Video Post successfully updated!",
-        videopost: updateVideoPost,
-    });
-});
+//     const updateVideoPost = await VideoPostModel.update(
+//         {
+//             videoTitle: videoTitle,
+//             videoLink: videoLink,
+//             thumbnailImage: thumbnailImage,
+//             playersHighlighted: playersHighlighted,
+//             teamsFeatured: teamsFeatured,
+//             tags: tags,
+//             gameDate: gameDate,
+//             nbaSeason: nbaSeason,
+//             isPlayoffs: isPlayoffs,
+//             clutch: clutch,
+//             adminHighlighted: adminHighlighted,
+//             adminDelete: adminDelete
+//         },
+//         {
+//             where: {
+//                 videoID: videoID,
+//                 videoOwner: videoOwner,
+//                 username: username
+//             }
+//         }
+//     );
+//     res.status(200).json({
+//         message: "Video Post successfully updated!",
+//         videopost: updateVideoPost,
+//     });
+// });
 
 
 //! DELETE a specific user's Video Post
-router.delete("/delete/:videoId", validateJWT, async (req, res) => {
-    const videoOwner = req.user.id;
-    const username = req.user.username;
+router.delete("/delete/:username/:videoId", validateJWT, async (req, res) => {
+    const username = req.params.username;
     const videoID = req.params.videoId;
 
     try {
     const deletedVideoPost = await VideoPostModel.destroy({
         where: {
             videoID: videoID,
-            videoOwner: videoOwner,
             username: username
         },
     });
@@ -238,13 +235,11 @@ router.delete("/delete/:videoId", validateJWT, async (req, res) => {
 
 //! Get all of a user's Video Posts
 router.get("/allVideos/:username", validateJWT, async (req, res) => {
-    const videoOwner = req.user.uuid;
     const username = req.user.username;
 
     try {
     const allUserVideos = await VideoPostModel.findAll({
         where: {
-            videoOwner: videoOwner,
             username: username,
         },
     });
@@ -259,28 +254,28 @@ router.get("/allVideos/:username", validateJWT, async (req, res) => {
     }
 });
 
-//! DELETE all of a user's Video Posts
-router.delete("allUserVideos/remove/", validateJWT, async (req, res) => {
-    const videoOwner = req.user.uuid;
-    const username = req.user.username;
+//! DELETE all of a user's Video Posts they've ever made
+router.delete("/deleteAll/:username", validateJWT, async (req, res) => {
+    const username = req.params.username;
 
     try {
-    const deletedVideoPosts = await VideoPostModel.destroy({
+    const deletedAllVideos = await VideoPostModel.destroy({
         where: {
-            videoOwner: videoOwner,
             username: username,
         },
     });
     res.status(200).json({
-        message: "All Video Posts from this User were deleted!",
-        deletedVideoPosts,
+        message: "All of a user's Video Posts deleted!",
+        deletedAllVideos,
     });
     } catch (err) {
     res.status(500).json({
-        message: "Failed to delete all of the Video Posts!",
+        message: "Failed to delete all of a user's Video Posts!",
         errorMessage: `Error message is: ${err}`
     });
     }
 });
+
+    
 
 module.exports = router;
