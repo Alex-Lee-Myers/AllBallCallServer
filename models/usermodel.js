@@ -20,6 +20,9 @@ const User = db.define("user", {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+            isEmail: true,
+        }
     },
     passwordhash: {
         type: DataTypes.STRING,
