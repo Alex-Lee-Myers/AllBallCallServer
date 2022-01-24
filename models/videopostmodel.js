@@ -58,7 +58,7 @@ const db = require("../db");
 const VideoPost = db.define("videopost", {
     videoID: {
         type: DataTypes.UUID,
-        // primaryKey: true,
+        primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
     },
@@ -68,14 +68,6 @@ const VideoPost = db.define("videopost", {
     },
     videoLink: {
         type: DataTypes.TEXT,
-        allowNull: false,
-    },
-    username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    videoOwner: {
-        type: DataTypes.UUID,
         allowNull: false,
     },
     thumbnailImage: {
@@ -126,11 +118,7 @@ const VideoPost = db.define("videopost", {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
-    // comments which is associated with a videopost and is an array of objects with a commentText, commentDate, commentUser, commentVideoID, adminDelete, and badActor
-    comments: {
-        type: DataTypes.ARRAY(DataTypes.JSON),
-        allowNull: true,
-    }  
+
 });
 
 module.exports = VideoPost;

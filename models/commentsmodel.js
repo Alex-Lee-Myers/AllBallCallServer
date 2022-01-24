@@ -16,10 +16,6 @@ const Comments = db.define("comments", {
         type: DataTypes.DATE,
         allowNull: false,
     },
-    commentUser: {
-        type: DataTypes.UUID,
-        allowNull: false,
-    },
     commentVideoID: {
         type: DataTypes.UUID,
         allowNull: false,

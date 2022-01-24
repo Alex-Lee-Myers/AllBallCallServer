@@ -24,7 +24,7 @@ app.use('/comments', controllers.commentscontroller);
 // try {
     dbConnection
         .authenticate()
-        .then(async () => await dbConnection.sync()) // { force: true } = reset database.
+        .then(async () => await dbConnection.sync({ force: true })) // { force: true } = reset database.
         .then(() => {
             app.listen(process.env.PORT, () => {
                 console.log(`[SERVER]: App is listening on ${process.env.PORT}`);

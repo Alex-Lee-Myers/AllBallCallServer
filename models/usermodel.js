@@ -47,17 +47,17 @@ const User = db.define("user", {
     accountResetAnswer2: {
         type: DataTypes.STRING,
         allowNull: false,
-    },
-    // the videos that the user has uploaded
-    videos: {
-        type: DataTypes.ARRAY(DataTypes.UUID),
-        allowNull: true,
-    },
-    // the comments that the user has made
-    comments: {
-        type: DataTypes.ARRAY(DataTypes.UUID),
-        allowNull: true,
-    },
+    }
+    // // the videos that the user has uploaded
+    // videos: {
+    //     type: DataTypes.ARRAY(DataTypes.UUID),
+    //     allowNull: true,
+    // },
+    // // the comments that the user has made
+    // comments: {
+    //     type: DataTypes.ARRAY(DataTypes.UUID),
+    //     allowNull: true,
+    // },
     // // the videos that the user has liked
     // likedVideos: {
     //     type: DataTypes.ARRAY(DataTypes.UUID),
