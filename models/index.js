@@ -1,5 +1,3 @@
-const db = require('../db');
-
 const UserModel = require('./usermodel');
 const VideoPostModel = require('./videopostmodel');
 const CommentsModel = require('./commentsmodel');
@@ -15,13 +13,17 @@ const CommentsModel = require('./commentsmodel');
 
 //! Users can have many videos
 UserModel.hasMany(VideoPostModel, {
-    foreignKey: 'videoOwner',
-    as: 'videos',
+    foreignKey: 'videoOwner'
 });
 
 //! Username can have many videos
 UserModel.hasMany(VideoPostModel, {
     foreignKey: 'username',
+});
+
+//! Videos must belong to a user
+VideoPostModel.belongsTo(UserModel, {
+    foreignKey: 'videoOwner'
 });
 
 //! Videos can have many comments
@@ -30,11 +32,24 @@ VideoPostModel.hasMany(CommentsModel, {
     as: 'comments',
 });
 
+//! Comments must belong to a video
+CommentsModel.belongsTo(VideoPostModel, {
+    foreignKey: 'commentVideoID',
+    as: 'video',
+});
+
 //! Users can have many comments
 UserModel.hasMany(CommentsModel, {
     foreignKey: 'commentUser',
     as: 'comments',
 });
+
+//! Comments must belong to a user
+CommentsModel.belongsTo(UserModel, {
+    foreignKey: 'commentUser',
+    as: 'commentsForUser',
+});
+
 
 //! Users can have many likes
 // UserModel.hasMany(LikesModel, {

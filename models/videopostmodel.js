@@ -118,7 +118,14 @@ const VideoPost = db.define("videopost", {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
-
+    username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    videoOwner: {
+        type: DataTypes.UUID,
+        allowNull: false
+    },
 });
 
 module.exports = VideoPost;

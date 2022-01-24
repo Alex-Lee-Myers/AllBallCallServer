@@ -10,9 +10,7 @@ console.log(VideoPostModel);
 router.post("/content", validateJWT, async (req, res) => {
     const {
         videoTitle, 
-        videoLink,
-        username,
-        videoOwner, 
+        videoLink, 
         thumbnailImage,
         playersHighlighted, 
         teamsFeatured, 
@@ -26,14 +24,15 @@ router.post("/content", validateJWT, async (req, res) => {
     } =
         req.body.videopost;
 
+    const username = req.user.username;
+    const videoOwner = req.user.uuid;
+
     try {
     const videoPostSuccess = await VideoPostModel.create
     ({
             videoID: uuid.v4(),
             videoTitle: videoTitle,
             videoLink: videoLink,
-            username: req.user.username,
-            videoOwner: req.user.uuid,
             thumbnailImage: thumbnailImage,
             playersHighlighted: playersHighlighted,
             teamsFeatured: teamsFeatured,
@@ -43,7 +42,9 @@ router.post("/content", validateJWT, async (req, res) => {
             isPlayoffs: isPlayoffs,
             clutch: clutch,
             adminHighlighted: adminHighlighted,
-            adminDelete: adminDelete
+            adminDelete: adminDelete,
+            username: username,
+            videoOwner: videoOwner
         });
     res.status(201).json({
         message: "Video Post created!",
