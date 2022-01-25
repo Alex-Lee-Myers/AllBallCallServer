@@ -7,33 +7,32 @@ const uuid = require("uuid");
 console.log(VideoPostModel);
 
 //! Create Video Post
-router.post("/content", validateJWT, async (req, res) => {
+router.post("/content/", validateJWT, async (req, res) => {
     const {
-        videoTitle, 
-        videoLink, 
+        videoTitle,
+        videoLink,
         thumbnailImage,
-        playersHighlighted, 
-        teamsFeatured, 
-        tags, 
-        gameDate, 
-        nbaSeason, 
-        isPlayoffs, 
+        playersHighlighted,
+        teamsFeatured,
+        tags,
+        gameDate,
+        nbaSeason,
+        isPlayoffs,
         clutch,
         adminHighlighted,
         adminDelete
     } =
         req.body.videopost;
 
-    const usernameConst = req.user.username;
-    const videoOwnerConst = req.user.uuid;
+    const videoIDcreateUUID = uuid.v4();
     // backticks look like this: `${variable}`
-    console.log(`videoOwner UUID is the following: ${videoOwnerConst} and has the type of ${typeof videoOwnerConst}`);
-    console.log(`Username is the following: ${usernameConst} and has the type of ${typeof usernameConst}`)
+    // console.log(`videoOwner UUID is the following: ${videoOwnerUUID} and has the type of ${typeof videoOwnerUUID}`);
+    // console.log(`Username is the following: ${usernameConst} and has the type of ${typeof usernameConst}`)
 
     try {
     const videoPostSuccess = await VideoPostModel.create
     ({
-            videoID: uuid.v4(),
+            videoID: videoIDcreateUUID,
             videoTitle: videoTitle,
             videoLink: videoLink,
             thumbnailImage: thumbnailImage,
@@ -46,8 +45,7 @@ router.post("/content", validateJWT, async (req, res) => {
             clutch: clutch,
             adminHighlighted: adminHighlighted,
             adminDelete: adminDelete,
-            videoOwner: videoOwnerConst, // make sure it's in format of uuid
-            username: usernameConst,
+            userUuid: req.user.uuid
         });
     res.status(201).json({
         message: "Video Post created!",
@@ -106,7 +104,7 @@ router.get("/content/:username/:videoID", validateJWT, async (req, res) => {
 });
 
 //! Update a specific Video Post
-router.put("/:username/:videoID", validateJWT, async (req, res) => {
+router.put("/content/:username/:videoID", validateJWT, async (req, res) => {
     const { 
         videoTitle,
         videoLink,
@@ -210,7 +208,7 @@ router.put("/:username/:videoID", validateJWT, async (req, res) => {
 
 
 //! DELETE a specific user's Video Post
-router.delete("/delete/:username/:videoId", validateJWT, async (req, res) => {
+router.delete("content/:username/:videoId", validateJWT, async (req, res) => {
     const username = req.params.username;
     const videoID = req.params.videoId;
 
@@ -238,7 +236,7 @@ router.delete("/delete/:username/:videoId", validateJWT, async (req, res) => {
 //!___________________________________________________________________________
 
 //! Get all of a user's Video Posts
-router.get("/allVideos/:username", validateJWT, async (req, res) => {
+router.get("content/admin/:username", validateJWT, async (req, res) => {
     const username = req.user.username;
 
     try {
@@ -259,7 +257,7 @@ router.get("/allVideos/:username", validateJWT, async (req, res) => {
 });
 
 //! DELETE all of a user's Video Posts they've ever made
-router.delete("/deleteAll/:username", validateJWT, async (req, res) => {
+router.delete("/content/admin/:username", validateJWT, async (req, res) => {
     const username = req.params.username;
 
     try {

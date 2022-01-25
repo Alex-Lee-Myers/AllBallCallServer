@@ -6,15 +6,16 @@ let validateJWT = require("../middleware/validate-session");
 router.post("/:videoID", validateJWT, async (req, res) => {
     try {
         const { videoID } = req.params;
-        const { commentText, commentUser } = req.body;
+        const { commentText } = req.body;
         const commentDate = new Date();
         const comment = await models.comments.create({
+            commentID: uuid.v4(),
             commentText,
-            commentDate,
-            commentUser,
-            commentVideoID: videoID,
+            commentDate: commentDate,
             adminDelete: false,
             badActor: false,
+            videopostVideoID: videoID,
+            userUuid: req.user.uuid
         });
         res.status(201).json(comment);
     } catch (err) {
@@ -27,13 +28,12 @@ router.post("/:videoID", validateJWT, async (req, res) => {
 router.put("/:videoID/:commentID", validateJWT, async (req, res) => {
     try {
         const { videoID, commentID } = req.params;
-        const { commentText, commentUser } = req.body;
+        const { commentText } = req.body;
         const commentDate = new Date();
         const comment = await models.comments.update({
+            commentID: commentID,
             commentText,
-            commentDate,
-            commentUser,
-            commentVideoID: videoID,
+            commentDate: commentDate,
             adminDelete: false,
             badActor: false,
         }, {

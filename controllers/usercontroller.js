@@ -68,7 +68,7 @@ router.post("/login", async (req, res) => {
 
     //compare our passwordhash to the DB passwordhash for the user
     // "(passwordhash," calls into parameter in 36. "user.passwordhash)" refers to line 39 and stepping into the object
-    console.log("Username: ", user.username, "Email :", user.email);
+    console.log("Username: ", user.username, "Email :", user.email, "UUIDL: ", user.uuid);
     // depending on userAuth value 0/1 we proceed or throw
     //TODO generate jwt for the user and save it to database
     if (!user.username) {

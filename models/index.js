@@ -4,6 +4,12 @@ const CommentsModel = require('./commentsmodel');
 // const LikesModel = require('./likesmodel');
 // const DislikesModel = require('./dislikesmodel');
 // const Bookmarks = require('./bookmarksmodel');
+// require the teamsArray
+// const teamsArray = require('./teamsArray'); // uncomment this line if you want to use the teamsArray in lines 33-37
+
+// Make videoID definited as a UUID
+const uuid = require('uuid');
+
 
 //! Types of associations: (Start)
 //? 1. HasMany
@@ -17,23 +23,14 @@ const CommentsModel = require('./commentsmodel');
 //? ______________________________________________
 //! Users can have many videos
 UserModel.hasMany(VideoPostModel, {
-    foreignKey: 'videoOwner'
-});
-
-//! Username can have many videos
-UserModel.hasMany(VideoPostModel, {
-    foreignKey: 'username'
-});
+    onDelete: 'CASCADE',
+    });
 
 //! Videos must belong to a user
 VideoPostModel.belongsTo(UserModel, {
-    foreignKey: 'videoOwner'
+    onDelete: "CASCADE",
 });
 
-//! Videos must belong to a user
-VideoPostModel.belongsTo(UserModel, {
-    foreignKey: 'username'
-});
 //? ______________________________________________
 //? VIDEOS SECTION | END
 //? ______________________________________________
@@ -45,45 +42,23 @@ VideoPostModel.belongsTo(UserModel, {
 //? COMMENTS SECTION | START
 //? ______________________________________________
 //! Videos can have many comments
+// this is the foreign key for the comments table
 VideoPostModel.hasMany(CommentsModel, {
-    foreignKey: 'commentVideoID',
-    as: 'comments',
+    onDelete: 'CASCADE',
 });
 
 //! Comments must belong to a video
 CommentsModel.belongsTo(VideoPostModel, {
-    foreignKey: 'commentVideoID',
-    as: 'video',
-
-    //* This is a custom field that will be used to find the video that the comment belongs to
-    //? This is the same as the videoID field in the comments table
-    //* This is used to find the video that the comment belongs to
-    //? The following is the function:
-    //* function findVideo(videoID) {
-    //*     return this.findOne({
-    //*         where: {
-    //*             videoID: videoID
-    //*         }
-    //*     });
+    onDelete: 'CASCADE',
 });
 
 //! Users can have many comments
 UserModel.hasMany(CommentsModel, {
-    foreignKey: 'commentUser',
-    as: 'comments',
-
-    //! This is a custom function that will be called when a user is deleted
-    //! It will delete all of the comments that the user has made
     onDelete: 'CASCADE',
 });
 
 //! Comments must belong to a user
 CommentsModel.belongsTo(UserModel, {
-    foreignKey: 'commentUser',
-    as: 'commentsForUser',
-
-    //! This is a custom function that will be called when a user is deleted
-    //! It will delete all of the comments that the user has made
     onDelete: 'CASCADE',
 });
 

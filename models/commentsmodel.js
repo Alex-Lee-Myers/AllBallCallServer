@@ -5,6 +5,7 @@ const Comments = db.define("comments", {
     commentID: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
         allowNull: false,
     },
     commentText: {
@@ -14,10 +15,6 @@ const Comments = db.define("comments", {
     },
     commentDate: {
         type: DataTypes.DATE,
-        allowNull: false,
-    },
-    commentVideoID: {
-        type: DataTypes.UUID,
         allowNull: false,
     },
     adminDelete: {

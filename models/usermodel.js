@@ -6,7 +6,7 @@ const db = require("../db");
 const User = db.define("user", {
     uuid: {
         type: DataTypes.UUID,
-        // primaryKey: true,
+        primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
     },
