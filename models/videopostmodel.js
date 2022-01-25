@@ -1,59 +1,5 @@
 const { DataTypes, Sequelize } = require("sequelize");
 const db = require("../db");
-// const teamsArray = require("./teamsArray")
-
-//! Creating my own DataTypes for TeamsArray
-
-// class TeamArrayValidator extends DataTypes.ABSTRACT {
-//         //! This is where I am going to validate the teamsArray
-//         //! It must contain a valid team from the teamsArray array
-//         //! It can contain multiple teams
-//         //! It can contain no teams
-//     toSql() {
-//         return `ARRAY[${this.map(team => `'${team}'`).join(",")}]`;
-//     }
-
-//     isValidTeamArray(value) {
-//         //! I am going to check if the value is an array
-//         if (Array.isArray(value)) {
-//             //! If it is an array I am going to check if it contains valid teams
-//             for (let i = 0; i < value.length; i++) {
-//                 //! I am going to check if the value is a string
-//                 if (typeof value[i] === "string") {
-//                     //! If it is a string I am going to check if it is a valid team
-//                     if (teamsArray.includes(value[i])) {
-//                         //! If it is a valid team I am going to return true
-//                         return true;
-//                     } else {
-//                         //! If it is not a valid team I am going to return false
-//                         return false;
-//                     }
-//                 } else {
-//                     //! If it is not a string I am going to return false
-//                     return false;
-//                 }
-//             }
-//         } else {
-//             //! If it is not an array I am going to return false
-//             return false;
-//         }
-//     }
-// }
-
-// // Manadatory, set key
-// const TeamArray = new TeamArrayValidator(DataTypes.ARRAY(DataTypes.STRING), {
-//     validate: {
-//         isValidTeamArray: function (value) {
-//             if (!this.isValidTeamArray(value)) {
-//                 throw new Error("Invalid team array");
-//             }
-//         }
-//     }
-// });
-
-// //  For convenience, 'classToInvokable' allows you to use the datatype without 'new'
-// TeamArray.classToInvokable = TeamArray;
-
 
 const VideoPost = db.define("videopost", {
     videoID: {
@@ -118,14 +64,68 @@ const VideoPost = db.define("videopost", {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
-    username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    videoOwner: {
-        type: DataTypes.UUID,
-        allowNull: false
-    },
+    //! videopostmodel belongsTo usermodel, with foreign key videoOwner
+    // videoOwner: {
+    //     type: DataTypes.UUID,
+    // },
+    //! videopostmodel belongsTo usermodel, with foreign key username
+    // username: {
+    //     type: DataTypes.STRING,
+    // }
 });
 
 module.exports = VideoPost;
+
+// const teamsArray = require("./teamsArray")
+
+//! Creating my own DataTypes for TeamsArray
+
+// class TeamArrayValidator extends DataTypes.ABSTRACT {
+//         //! This is where I am going to validate the teamsArray
+//         //! It must contain a valid team from the teamsArray array
+//         //! It can contain multiple teams
+//         //! It can contain no teams
+//     toSql() {
+//         return `ARRAY[${this.map(team => `'${team}'`).join(",")}]`;
+//     }
+
+//     isValidTeamArray(value) {
+//         //! I am going to check if the value is an array
+//         if (Array.isArray(value)) {
+//             //! If it is an array I am going to check if it contains valid teams
+//             for (let i = 0; i < value.length; i++) {
+//                 //! I am going to check if the value is a string
+//                 if (typeof value[i] === "string") {
+//                     //! If it is a string I am going to check if it is a valid team
+//                     if (teamsArray.includes(value[i])) {
+//                         //! If it is a valid team I am going to return true
+//                         return true;
+//                     } else {
+//                         //! If it is not a valid team I am going to return false
+//                         return false;
+//                     }
+//                 } else {
+//                     //! If it is not a string I am going to return false
+//                     return false;
+//                 }
+//             }
+//         } else {
+//             //! If it is not an array I am going to return false
+//             return false;
+//         }
+//     }
+// }
+
+// // Manadatory, set key
+// const TeamArray = new TeamArrayValidator(DataTypes.ARRAY(DataTypes.STRING), {
+//     validate: {
+//         isValidTeamArray: function (value) {
+//             if (!this.isValidTeamArray(value)) {
+//                 throw new Error("Invalid team array");
+//             }
+//         }
+//     }
+// });
+
+// //  For convenience, 'classToInvokable' allows you to use the datatype without 'new'
+// TeamArray.classToInvokable = TeamArray;

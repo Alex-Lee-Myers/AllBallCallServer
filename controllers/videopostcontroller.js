@@ -24,8 +24,11 @@ router.post("/content", validateJWT, async (req, res) => {
     } =
         req.body.videopost;
 
-    const username = req.user.username;
-    const videoOwner = req.user.uuid;
+    const usernameConst = req.user.username;
+    const videoOwnerConst = req.user.uuid;
+    // backticks look like this: `${variable}`
+    console.log(`videoOwner UUID is the following: ${videoOwnerConst} and has the type of ${typeof videoOwnerConst}`);
+    console.log(`Username is the following: ${usernameConst} and has the type of ${typeof usernameConst}`)
 
     try {
     const videoPostSuccess = await VideoPostModel.create
@@ -43,8 +46,8 @@ router.post("/content", validateJWT, async (req, res) => {
             clutch: clutch,
             adminHighlighted: adminHighlighted,
             adminDelete: adminDelete,
-            username: username,
-            videoOwner: videoOwner
+            videoOwner: videoOwnerConst, // make sure it's in format of uuid
+            username: usernameConst,
         });
     res.status(201).json({
         message: "Video Post created!",
