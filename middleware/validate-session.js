@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { UserModel } = require('../models');
+const { UserModel, VideoPostModel, CommentsModel } = require('../models');
 
 const validateJWT = async (req, res, next) => {
     if (req.method == 'OPTIONS') {
@@ -10,15 +10,15 @@ const validateJWT = async (req, res, next) => {
             authorization.includes('Bearer') ? authorization.split(' ')[1] : authorization,
             process.env.JWT_SECRET
         ) : undefined;
-
+            console.log("UserModel Console Log: ", UserModel)
         if (payload) {
-            console.log(`This is the payload: ${payload}`);
+            
             let foundUser = await UserModel.findOne({
                 where: {
-                    id: payload.id,
+                    id: payload.id
                 }
             });
-
+            
             if (foundUser) {
                 req.user = foundUser;
                 next();
@@ -37,6 +37,7 @@ const validateJWT = async (req, res, next) => {
             message: 'Forbidden'
         });
     };
+    
 };
 
 module.exports = validateJWT;

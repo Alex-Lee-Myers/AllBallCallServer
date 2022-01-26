@@ -6,7 +6,7 @@ const CommentsModel = require('./commentsmodel');
 // const Bookmarks = require('./bookmarksmodel');
 // require the teamsArray
 // const teamsArray = require('./teamsArray'); // uncomment this line if you want to use the teamsArray in lines 33-37
-
+const db = require('../db');
 // Make videoID definited as a UUID
 const uuid = require('uuid');
 
@@ -106,6 +106,7 @@ CommentsModel.belongsTo(UserModel, {
 
 //! Export the models
 module.exports = {
+    dbConnection: db,
     UserModel,
     VideoPostModel,
     CommentsModel,

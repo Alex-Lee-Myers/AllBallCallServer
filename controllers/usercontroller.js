@@ -4,6 +4,7 @@ const { UserModel } = require("../models");
 const { UniqueConstraintError, Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+let validateJWT = require("../middleware/validate-session");
 // import uuid
 const uuid = require("uuid");
 
@@ -23,7 +24,7 @@ router.post("/register", async (req, res) => {
 
     try {
         const User = await UserModel.create({
-            uuid: uuid.v4(),
+            id: uuid.v4(),
             username: username,
             email: email,
             passwordhash: pwHashed,
@@ -68,7 +69,7 @@ router.post("/login", async (req, res) => {
 
     //compare our passwordhash to the DB passwordhash for the user
     // "(passwordhash," calls into parameter in 36. "user.passwordhash)" refers to line 39 and stepping into the object
-    console.log("Username: ", user.username, "Email :", user.email, "UUIDL: ", user.uuid);
+    console.log("Username: ", user.username, "Email :", user.email, "UUID: ", user.uuid);
     // depending on userAuth value 0/1 we proceed or throw
     //TODO generate jwt for the user and save it to database
     if (!user.username) {
@@ -101,7 +102,8 @@ router.post("/login", async (req, res) => {
     }
     });
 
-router.get("/:id", async (req, res) => {
+//! GET UserInfo if they are logged in
+router.get("userInfo/:id", validateJWT, async (req, res) => {
     const { id } = req.params;
     try {
         const user = await UserModel.findOne({
@@ -123,7 +125,7 @@ router.get("/:id", async (req, res) => {
 
 //TODO 2) update username and/or email only if valid
 
-router.put("/:id", async (req, res) => {
+router.put("userInfo/:id", validateJWT, async (req, res) => {
     const { id } = req.params;
     const {
         username,
@@ -164,7 +166,7 @@ router.put("/:id", async (req, res) => {
     }
 });
 // if validateJWT is true, then we can delete the user
-router.delete("/:id", async (req, res) => {
+router.delete("userInfo/:id", validateJWT, async (req, res) => {
     const { id } = req.params;
     try {
         const user = await UserModel.destroy({
