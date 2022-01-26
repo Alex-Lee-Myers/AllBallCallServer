@@ -100,11 +100,13 @@ router.post("/login", async (req, res) => {
         message: "Failed to log user in",
         });
     }
-    });
+});
 
 //! GET UserInfo if they are logged in
-router.get("userInfo/:id", validateJWT, async (req, res) => {
+router.get("/:id", validateJWT, async (req, res) => {
+    console.log("UserInfo: ", req.user);
     const { id } = req.params;
+
     try {
         const user = await UserModel.findOne({
             where: {
@@ -122,51 +124,43 @@ router.get("userInfo/:id", validateJWT, async (req, res) => {
 });
 
 //TODO 1) update passphrase only if the user answers accountResetQuestion1 and accountResetQuestion2 correctly according to accountResetAnswer1 and accountResetAnswer2
-
 //TODO 2) update username and/or email only if valid
 
-router.put("userInfo/:id", validateJWT, async (req, res) => {
+router.put("/passphrase/:id", validateJWT, async (req, res) => {
     const { id } = req.params;
     const {
         username,
         email,
         passwordhash,
-        isAdmin,
-        accountResetQuestion1,
-        accountResetQuestion2,
-        accountResetAnswer1,
-        accountResetAnswer2,
     } = req.body.user;
+
     try {
-        const user = await UserModel.update(
-            {
-                username: username,
-                email: email,
-                passwordhash: passwordhash,
-                isAdmin: isAdmin,
-                accountResetQuestion1: accountResetQuestion1,
-                accountResetQuestion2: accountResetQuestion2,
-                accountResetAnswer1: accountResetAnswer1,
-                accountResetAnswer2: accountResetAnswer2,
+    // update username, email and passwordhash
+    const user = await UserModel.update(
+        {
+            username: username,
+            email: email,
+            passwordhash: passwordhash,
+        },
+        {
+            where: {
+                id: id,
             },
-            {
-                where: {
-                    id: id,
-                },
-            }
-        );
-        res.status(200).json({
-            message: "User successfully updated!",
-            user: user,
-        });
+        }
+    );
+    res.status(200).json({
+        message: "User successfully updated!",
+        user: user,
+    });
     } catch (error) {
         res.status(500).json({
         message: "Failed to update user",
         });
     }
 });
+
 // if validateJWT is true, then we can delete the user
-router.delete("userInfo/:id", validateJWT, async (req, res) => {
+router.delete(":id", validateJWT, async (req, res) => {
     const { id } = req.params;
     try {
         const user = await UserModel.destroy({

@@ -4,8 +4,6 @@ let validateJWT = require("../middleware/validate-session");
 const { VideoPostModel } = require("../models");
 const uuid = require("uuid");
 
-console.log(VideoPostModel);
-
 //! Create Video Post
 router.post("/content/", validateJWT, async (req, res) => {
     const {
@@ -116,16 +114,12 @@ router.put("/content/:userId/:videoID", validateJWT, async (req, res) => {
         gameDate,
         nbaSeason,
         isPlayoffs,
-        clutch,
-        adminHighlighted,
-        adminDelete    
+        clutch
     } =    
         req.body.videopost;
 
     //? VideoID is the primary key of the table. Needed to grab for the user's video post in the where clause.
-    const videoID = req.params.videoID;
-    const videoOwner = req.user.uuid;
-    const userId = req.params.userId;
+    const { userId, videoID } = req.params;
 
         const updateVideoPost = await VideoPostModel.update(
             {
@@ -138,14 +132,11 @@ router.put("/content/:userId/:videoID", validateJWT, async (req, res) => {
                 gameDate: gameDate,
                 nbaSeason: nbaSeason,
                 isPlayoffs: isPlayoffs,
-                clutch: clutch,
-                adminHighlighted: adminHighlighted,
-                adminDelete: adminDelete
+                clutch: clutch
             },
             {
                 where: {
                     videoID: videoID,
-                    videoOwner: videoOwner,
                     userId: userId
                 }
             }

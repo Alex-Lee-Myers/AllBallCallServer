@@ -1,101 +1,139 @@
-const router = require('express').Router();
-const { models } = require('../models');
+const Express = require("express");
+const router = Express.Router();
 let validateJWT = require("../middleware/validate-session");
+const { CommentsModel } = require('../models');
 
 //! create a new comment for a specific video when the user submits a comment on the video when the user is logged in + validated
 router.post("/:videoID", validateJWT, async (req, res) => {
+    const {
+        commentText
+    } =
+        req.body.comments;
+
+    const videoID = req.params.videoID;
+    const userId = req.user.id;
+    const commentDate = new Date();
+
     try {
-        const { videoID } = req.params;
-        const { commentText } = req.body;
-        const commentDate = new Date();
-        const comment = await models.comments.create({
-            commentID: uuid.v4(),
-            commentText,
+        const commentSuccess = await CommentsModel.create
+        ({
+            commentText: commentText,
             commentDate: commentDate,
-            adminDelete: false,
-            badActor: false,
             videopostVideoID: videoID,
-            userUuid: req.user.uuid
+            userId: userId
         });
-        res.status(201).json(comment);
+        res.status(201).json({
+            message: "Comment created!",
+            comment: commentSuccess,
+        });
     } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
+        res.status(500).json({
+            messageError: `Error message is: ${err}`,
+            message: "Failed to create the Comment!",
+        });
     }
 });
 
 //! update a comment for a specific video from a specific user when they're validated with ValidateJWT from validate-session.js
 router.put("/:videoID/:commentID", validateJWT, async (req, res) => {
+    const { commentText } = req.body.comments;
+    
+    const videoID = req.params.videopostVideoID;
+    const { commentID } = req.params;
+    const commentDate = new Date();
+
     try {
-        const { videoID, commentID } = req.params;
-        const { commentText } = req.body;
-        const commentDate = new Date();
-        const comment = await models.comments.update({
-            commentID: commentID,
-            commentText,
-            commentDate: commentDate,
-            adminDelete: false,
-            badActor: false,
-        }, {
+        const commentSuccess = await CommentsModel.update
+        ({
+            commentText: commentText,
+            commentDate: commentDate
+        },
+        {
             where: {
-                commentID,
+                commentID: commentID
             }
         });
-        res.status(201).json(comment);
+        res.status(201).json({
+            message: "Comment updated!",
+            comment: commentSuccess,
+        });
     } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
+        res.status(500).json({
+            messageError: `Error message is: ${err}`,
+            message: "Failed to update the Comment!",
+        });
     }
 });
 
 //! delete a comment for a specific video from a specific user when they're validated with ValidateJWT from validate-session.js
 router.delete("/:videoID/:commentID", validateJWT, async (req, res) => {
+    const { commentID } = req.params;
+    const videoID = req.params.videopostVideoID;
+
     try {
-        const { videoID, commentID } = req.params;
-        const comment = await models.comments.destroy({
+        const commentSuccess = await CommentsModel.destroy
+        ({
             where: {
-                commentID,
+                commentID: commentID,
+                videopostVideoID: videoID
             }
         });
-        res.status(201).json(comment);
+        res.status(201).json({
+            message: "Comment deleted!",
+            comment: commentSuccess,
+        });
     } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
+        res.status(500).json({
+            messageError: `Error message is: ${err}`,
+            message: "Failed to delete the Comment!",
+        });
     }
 });
 
 //! get all comments for a specific video when the user is validated with ValidateJWT from validate-session.js
 router.get("/:videoID", validateJWT, async (req, res) => {
+    const videoID = req.params.videopostVideoID;
+
     try {
-        const { videoID } = req.params;
-        const comments = await models.comments.findAll({
+        const commentsSuccess = await CommentsModel.findAll
+        ({
             where: {
-                commentVideoID: videoID,
-                adminDelete: false,
-                badActor: false,
+                videpostVideoID: videoID
             }
         });
-        res.status(201).json(comments);
+        res.status(201).json({
+            message: "All comments for a specific video!",
+            comments: commentsSuccess,
+        });
     } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
+        res.status(500).json({
+            messageError: `Error message is: ${err}`,
+            message: "Failed to get all comments for a specific video!",
+        });
     }
 });
 
 //! delete all of a users comments if the person deleting them is an admin
-// router.delete("/:videoID", validateJWT, async (req, res) => {
-//     try {
-//         const { videoID } = req.params;
-//         const comments = await models.comments.destroy({
-//             where: {
-//                 commentVideoID: videoID,
-//             }
-//         });
-//         res.status(201).json(comments);
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).json(err);
-//     }
-// });
+router.delete("/:userID", validateJWT, async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const commentsSuccess = await CommentsModel.destroy
+        ({
+            where: {
+                userID: userId
+            }
+        });
+        res.status(201).json({
+            message: "All comments for a specific user!",
+            comments: commentsSuccess,
+        });
+    } catch (err) {
+        res.status(500).json({
+            messageError: `Error message is: ${err}`,
+            message: "Failed to get all comments for a specific user!",
+        });
+    }
+});
 
 module.exports = router;
