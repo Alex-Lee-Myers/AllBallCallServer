@@ -37,15 +37,13 @@ P.E.R.N. (PostgreSQL, Express, React, Node.js)
 
 Due to the nature of this project being required to reach MVP within 25 days, from server to client side, a host of packages were implemented to quicken progress on the client side. 
 
-- TypeScript
-- Tailwind CSS 3.0
-- Headless UI
-- React-Router-Dom
-- React-Player
-
-#### Who designed the logo? 
-
-Well, I did! I have ove
+- BcrpytJS
+- Express
+- .env
+- JsonWebToken
+- PostgreSQL
+- Sequelize
+- UUID
 
 #### Who designed the logo? 
 
