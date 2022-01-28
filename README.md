@@ -35,7 +35,7 @@ P.E.R.N. (PostgreSQL, Express, React, Node.js)
 
 #### What type of technologies were used?
 
-Due to the nature of this project being required to reach MVP within 25 days, from server to client side, a host of packages were implemented to quicken progress on the client side. 
+Due to the nature of this project being required to reach MVP within 25 days, from server to client side, a host of packages were implemented to quicken progress on the server side. 
 
 - BcrpytJS
 - Express
