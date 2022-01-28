@@ -1,7 +1,7 @@
 
 # AllBallCall
 
-A full-stack web application that delivers the best basketball highlight experience you can receive. Curated videos, filtered, sorted, and save any of your favorites as well. This repo contains the client side of the application while the server side can be seen [here](https://github.com/Alex-Lee-Myers/AllBallCallServer).
+A full-stack web application that delivers the best basketball highlight experience you can receive. Curated videos, filtered, sorted, and save any of your favorites as well. This repo contains the server side of the application while the client side can be seen [here](https://github.com/Alex-Lee-Myers/AllBallCallClient).
 
 
 
@@ -23,8 +23,8 @@ A full-stack web application that delivers the best basketball highlight experie
 [Click me]() to view the live deploy through Heroku.
 
 
-## Server GitHub Repository
-[Click me](https://github.com/Alex-Lee-Myers/AllBallCallServer) to view the Server repository for AllBallCall.
+## Client Repository
+[Click me](https://github.com/Alex-Lee-Myers/AllBallCallClient) to view the Client repo for AllBallCall.
 
 
 ## FAQ
