@@ -92,6 +92,7 @@ router.post("/login", async (req, res) => {
             message: "User successfully logged in!",
             user: UserModel,
             sessionToken: token,
+            id: user.id,
         });
     }
     } catch (error) {
@@ -100,6 +101,17 @@ router.post("/login", async (req, res) => {
         message: "Failed to log user in",
         });
     }
+});
+
+// Checking if their token is valid, if it is, then:
+router.get("/validate", validateJWT, async (req, res) => {
+    res.status(200).json({
+        message: "Token is valid",
+        id: req.user.id,
+        email: req.user.email,
+        username: req.user.username,
+        isAdmin: req.user.isAdmin
+    });
 });
 
 //! GET UserInfo if they are logged in
@@ -115,10 +127,11 @@ router.get("/:id", validateJWT, async (req, res) => {
         });
         res.status(200).json({
             user: user,
+            message: ":id | UserInfo grabbed!",
         });
     } catch (error) {
         res.status(500).json({
-        message: "Failed to get user",
+        message: ":id | Failed to get user",
         });
     }
 });
@@ -149,12 +162,12 @@ router.put("/passphrase/:id", validateJWT, async (req, res) => {
         }
     );
     res.status(200).json({
-        message: "User successfully updated!",
+        message: "/passphrase/:id | User successfully updated!",
         user: user,
     });
     } catch (error) {
         res.status(500).json({
-        message: "Failed to update user",
+        message: "/passphrase/:id | Failed to update user",
         });
     }
 });
@@ -178,6 +191,8 @@ router.delete(":id", validateJWT, async (req, res) => {
         });
     }
 });
+
+
 
 
 module.exports = router;

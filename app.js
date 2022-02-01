@@ -16,8 +16,8 @@ app.use(express.json());
 
 // endpoints
 app.use('/users', controllers.usercontroller);
-app.use(middleware.validateSession);
 app.use('/videos', controllers.videopostcontroller);
+app.use(middleware.validateSession);
 app.use('/comments', controllers.commentscontroller);
 
 // database auth & sync

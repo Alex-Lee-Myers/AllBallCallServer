@@ -34,6 +34,31 @@ router.post("/:videoID", validateJWT, async (req, res) => {
     }
 });
 
+//! get a single comment from a specific video when the user is logged in + validated
+router.get("/:videoID/:commentID", validateJWT, async (req, res) => {
+    const videoID = req.params.videoID;
+    const commentID = req.params.commentID;
+
+    try {
+        const commentSuccess = await CommentsModel.findOne({
+            where: {
+                videopostVideoID: videoID,
+                commentID: commentID
+            }
+        });
+        res.status(200).json({
+            message: "Comment found!",
+            comment: commentSuccess,
+        });
+    } catch (err) {
+        res.status(500).json({
+            messageError: `Error message is: ${err}`,
+            message: "Failed to find the Comment!",
+        });
+    }
+});
+
+
 //! update a comment for a specific video from a specific user when they're validated with ValidateJWT from validate-session.js
 router.put("/:videoID/:commentID", validateJWT, async (req, res) => {
     const { commentText } = req.body.comments;
@@ -92,18 +117,18 @@ router.delete("/:videoID/:commentID", validateJWT, async (req, res) => {
 
 //! get all comments for a specific video when the user is validated with ValidateJWT from validate-session.js
 router.get("/:videoID", validateJWT, async (req, res) => {
-    const videoID = req.params.videopostVideoID;
+    const videoID = req.params.videoID;
 
     try {
-        const commentsSuccess = await CommentsModel.findAll
+        const allComments = await CommentsModel.findAll
         ({
             where: {
-                videpostVideoID: videoID
+                videopostVideoID: videoID
             }
         });
-        res.status(201).json({
+        res.status(200).json({
             message: "All comments for a specific video!",
-            comments: commentsSuccess,
+            allComments,
         });
     } catch (err) {
         res.status(500).json({

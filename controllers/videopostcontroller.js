@@ -4,6 +4,26 @@ let validateJWT = require("../middleware/validate-session");
 const { VideoPostModel } = require("../models");
 const uuid = require("uuid");
 
+//! GET all video posts, no need for ValidateJWT
+router.get("/content/all", async (req, res) => {
+    try {
+        const allVideos = await VideoPostModel.findAll({
+            where: {
+                adminDelete: false,
+            },
+        });
+        res.status(200).json({
+            message: "All Video Posts!",
+            allVideos,
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "Failed to get all Video Posts!",
+            errorMessage: `Error message is: ${err}`
+        });
+    }
+});
+
 //! Create Video Post
 router.post("/content/", validateJWT, async (req, res) => {
     const {
@@ -270,6 +290,6 @@ router.delete("/content/admin/:userId", validateJWT, async (req, res) => {
     }
 });
 
-    
+
 
 module.exports = router;
