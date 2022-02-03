@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { UserModel, VideoPostModel, CommentsModel } = require('../models');
+const { UserModel } = require('../models');
 
 const validateJWT = async (req, res, next) => {
     if (req.method == 'OPTIONS') {

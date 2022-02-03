@@ -47,17 +47,21 @@ const User = db.define("user", {
     accountResetAnswer2: {
         type: DataTypes.STRING,
         allowNull: false,
-    }
-    // // the videos that the user has uploaded
-    // videos: {
-    //     type: DataTypes.ARRAY(DataTypes.UUID),
-    //     allowNull: true,
+    },
+    // column for the user's avatar
+    // avatar: {
+    //     type: DataTypes.STRING,
+    //     defaultValue: "https://res.cloudinary.com/dzqbzqgqw/image/upload/v1589735894/default_avatar_jxqzqz.png",
     // },
-    // // the comments that the user has made
-    // comments: {
-    //     type: DataTypes.ARRAY(DataTypes.UUID),
-    //     allowNull: true,
-    // },
+    // requires the process.env.ADMIN_PASSWORD variable
+    // hide the value from the table
+    //? adminPassword: {
+    //     type: DataTypes.VIRTUAL,
+    //     get() {
+    //         return process.env.ADMIN_PASSWORD;
+    //     }
+    // }
+
     // // the videos that the user has liked
     // likedVideos: {
     //     type: DataTypes.ARRAY(DataTypes.UUID),
