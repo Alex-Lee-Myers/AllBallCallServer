@@ -91,9 +91,11 @@ router.post("/login", async (req, res) => {
             username: user.username,
             email: user.email,
             message: "User successfully logged in!",
+            status: 200,
             user: UserModel,
             sessionToken: token,
             id: user.id,
+            isAdmin: user.isAdmin
         });
     }
     } catch (error) {
@@ -111,7 +113,8 @@ router.get("/validate", validateJWT, async (req, res) => {
         id: req.user.id,
         email: req.user.email,
         username: req.user.username,
-        isAdmin: req.user.isAdmin
+        isAdmin: req.user.isAdmin,
+        status: 200
     });
 });
 

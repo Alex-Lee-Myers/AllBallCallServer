@@ -29,16 +29,14 @@ router.post("/content/", validateJWT, async (req, res) => {
     const {
         videoTitle,
         videoLink,
-        thumbnailImage,
-        playersHighlighted,
-        teamsFeatured,
-        tags,
-        gameDate,
-        nbaSeason,
-        isPlayoffs,
-        clutch,
-        adminHighlighted,
-        adminDelete
+        // thumbnailImage,
+        // playersHighlighted,
+        // teamsFeatured,
+        // tags,
+        // gameDate,
+        // nbaSeason,
+        // isPlayoffs,
+        // clutch
     } =
         req.body.videopost;
 
@@ -53,24 +51,26 @@ router.post("/content/", validateJWT, async (req, res) => {
             videoID: videoIDcreateUUID,
             videoTitle: videoTitle,
             videoLink: videoLink,
-            thumbnailImage: thumbnailImage,
-            playersHighlighted: playersHighlighted,
-            teamsFeatured: teamsFeatured,
-            tags: tags,
-            gameDate: gameDate,
-            nbaSeason: nbaSeason,
-            isPlayoffs: isPlayoffs,
-            clutch: clutch,
-            adminHighlighted: adminHighlighted,
-            adminDelete: adminDelete,
+            thumbnailImage: null,
+            playersHighlighted: null,
+            teamsFeatured: null,
+            tags: null,
+            gameDate: null,
+            nbaSeason: null,
+            isPlayoffs: null,
+            clutch: null,
+            adminHighlighted: false,
+            adminDelete: false,
             userId: req.user.id
         });
     res.status(201).json({
+        status: 201,
         message: "Video Post created!",
         videopost: videoPostSuccess,
     });
     } catch (err) {
     res.status(500).json({
+        status: 500,
         messageError: `Error message is: ${err}`,
         message: "Failed to create the Video Post!",
     });

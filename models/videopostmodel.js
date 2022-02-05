@@ -15,6 +15,7 @@ const VideoPost = db.define("videopost", {
     videoLink: {
         type: DataTypes.TEXT,
         allowNull: false,
+        unique: true
     },
     thumbnailImage: {
         type: DataTypes.TEXT,
@@ -62,7 +63,8 @@ const VideoPost = db.define("videopost", {
     },
     adminDelete: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        allowNull:true,
+        defaultValue: false
     },
     //! videopostmodel belongsTo usermodel, with foreign key videoOwner
     // videoOwner: {

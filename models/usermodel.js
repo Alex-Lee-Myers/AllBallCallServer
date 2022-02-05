@@ -31,6 +31,7 @@ const User = db.define("user", {
     isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+        allowNull: true
     },
     accountResetQuestion1: {
         type: DataTypes.STRING,
@@ -55,7 +56,7 @@ const User = db.define("user", {
     // },
     // requires the process.env.ADMIN_PASSWORD variable
     // hide the value from the table
-    //? adminPassword: {
+    // adminPassword: {
     //     type: DataTypes.VIRTUAL,
     //     get() {
     //         return process.env.ADMIN_PASSWORD;
