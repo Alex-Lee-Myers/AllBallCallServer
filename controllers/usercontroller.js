@@ -107,15 +107,21 @@ router.post("/login", async (req, res) => {
 });
 
 // Checking if their token is valid, if it is, then:
-router.get("/validate", validateJWT, async (req, res) => {
+router.post("/validate", validateJWT, async (req, res) => {
     res.status(200).json({
-        message: "Token is valid",
+        message: "Token is valid!",
         id: req.user.id,
         email: req.user.email,
         username: req.user.username,
         isAdmin: req.user.isAdmin,
         status: 200
-    });
+    })
+        .catch(err => {
+            res.status(401).json({
+                message: "Token is invalid!",
+                status: 401
+            })
+        })
 });
 
 //! GET UserInfo if they are logged in
@@ -192,6 +198,157 @@ router.delete(":id", validateJWT, async (req, res) => {
     } catch (error) {
         res.status(500).json({
         message: "Failed to delete user",
+        });
+    }
+});
+
+//! Get accountResetQuestion1, accountResetQuestion2 where id is equal to the id in the request body
+router.get("/settings/:id", validateJWT, async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user = await UserModel.findOne({
+            where: {
+                id: id,
+            },
+        });
+        res.status(200).json({
+            accountResetQuestion1: user.accountResetQuestion1,
+            accountResetQuestion2: user.accountResetQuestion2,
+            message: "accountResetQuestion1 and accountResetQuestion2 grabbed!",
+            status: 200,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to get accountResetQuestion1 and accountResetQuestion2",
+            status: 500
+        });
+    }
+});
+
+//! If user text input matches according to accountResetAnswer1 and accountResetAnswer2, it will send back a response of 200 and True
+router.put("/settings/resetAnswers/:id", validateJWT, async (req, res) => {
+    const { id } = req.params;
+    const {
+        accountResetAnswer1,
+        accountResetAnswer2,
+    } = req.body.user;
+
+    try {
+        const user = await UserModel.findOne({
+            where: {
+                id: id,
+            },
+        });
+        if (
+            accountResetAnswer1 === user.accountResetAnswer1 &&
+            accountResetAnswer2 === user.accountResetAnswer2
+        ) {
+            res.status(200).json({
+                message: "accountResetAnswer1 and accountResetAnswer2 are correct",
+                status: 200,
+                boolean: true,
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to get accountResetAnswer1 and accountResetAnswer2",
+            status: 500,
+            boolean: false,
+        });
+    }
+});
+
+//! endpoint to update passwordhash
+router.put("/settings/passwordUpdate/:id", validateJWT, async (req, res) => {
+    const { id } = req.params;
+    const {
+        passwordhash,
+    } = req.body.user;
+
+    try {
+        const user = await UserModel.update(
+            {
+                passwordhash: passwordhash,
+            },
+            {
+                where: {
+                    id: id,
+                },
+            }
+        );
+        res.status(200).json({
+            message: "Password updated!",
+            user: user,
+            status: 200,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to update password.",
+            status: 500,
+        });
+    }
+});
+
+
+//! endpoint to update email
+router.put("/settings/emailUpdate/:id", validateJWT, async (req, res) => {
+    const { id } = req.params;
+    const {
+        email,
+    } = req.body.user;
+
+    try {
+        const user = await UserModel.update(
+            {
+                email: email,
+            },
+            {
+                where: {
+                    id: id,
+                },
+            }
+        );
+        res.status(200).json({
+            message: "Email updated!",
+            user: user,
+            status: 200,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to update email.",
+            status: 500,
+        });
+    }
+});
+
+//! endpoint to update username
+router.put("/settings/usernameUpdate/:id", validateJWT, async (req, res) => {
+    const { id } = req.params;
+    const {
+        username,
+    } = req.body.user;
+
+    try {
+        const user = await UserModel.update(
+            {
+                username: username,
+            },
+            {
+                where: {
+                    id: id,
+                },
+            }
+        );
+        res.status(200).json({
+            message: "Username updated!",
+            user: user,
+            status: 200,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to update username.",
+            status: 500,
         });
     }
 });
