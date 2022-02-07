@@ -183,7 +183,7 @@ router.put("/passphrase/:id", validateJWT, async (req, res) => {
 });
 
 // if validateJWT is true, then we can delete the user
-router.delete(":id", validateJWT, async (req, res) => {
+router.delete("/settings/deleteUser/:id", validateJWT, async (req, res) => {
     const { id } = req.params;
     try {
         const user = await UserModel.destroy({
@@ -194,10 +194,12 @@ router.delete(":id", validateJWT, async (req, res) => {
         res.status(200).json({
             message: "User successfully deleted!",
             user: user,
+            status: 200,
         });
     } catch (error) {
         res.status(500).json({
-        message: "Failed to delete user",
+            message: "Failed to delete user",
+            status: 500,
         });
     }
 });
@@ -225,9 +227,20 @@ router.get("/settings/:id", validateJWT, async (req, res) => {
         });
     }
 });
-
+// const user = await UserModel.update(
+// 	{
+// 		username: username,
+// 		email: email,
+// 		passwordhash: passwordhash,
+// 	},
+// 	{
+// 		where: {
+// 			id: id,
+// 		},
+// 	}
+// );
 //! If user text input matches according to accountResetAnswer1 and accountResetAnswer2, it will send back a response of 200 and True
-router.put("/settings/resetAnswers/:id", validateJWT, async (req, res) => {
+router.post("/settings/resetAnswers/:id", validateJWT, async (req, res) => {
     const { id } = req.params;
     const {
         accountResetAnswer1,
@@ -245,16 +258,15 @@ router.put("/settings/resetAnswers/:id", validateJWT, async (req, res) => {
             accountResetAnswer2 === user.accountResetAnswer2
         ) {
             res.status(200).json({
-                message: "accountResetAnswer1 and accountResetAnswer2 are correct",
+                message: "Users answers are correct!",
                 status: 200,
                 boolean: true,
             });
         }
     } catch (error) {
         res.status(500).json({
-            message: "Failed to get accountResetAnswer1 and accountResetAnswer2",
-            status: 500,
-            boolean: false,
+            message: "Incorrect answers.",
+            status: 500
         });
     }
 });
@@ -266,10 +278,13 @@ router.put("/settings/passwordUpdate/:id", validateJWT, async (req, res) => {
         passwordhash,
     } = req.body.user;
 
+    const salt = bcrypt.genSaltSync(12);
+	const pwHashed = bcrypt.hashSync(passwordhash, salt);
+
     try {
         const user = await UserModel.update(
             {
-                passwordhash: passwordhash,
+                passwordhash: pwHashed,
             },
             {
                 where: {
