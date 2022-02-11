@@ -258,7 +258,7 @@ router.get("content/admin/:userId", validateJWT, async (req, res) => {
         },
     });
     res.status(200).json({
-        message: "All of a user's Video Posts!",
+        message: "Deleted of a user's Video Posts!",
         allUserVideos,
     });
     } catch (err) {
@@ -269,7 +269,7 @@ router.get("content/admin/:userId", validateJWT, async (req, res) => {
 });
 
 //! DELETE all of a user's Video Posts they've ever made
-router.delete("/content/admin/:userId", validateJWT, async (req, res) => {
+router.delete("/content/:userId", validateJWT, async (req, res) => {
     const userId = req.params.userId;
 
     try {

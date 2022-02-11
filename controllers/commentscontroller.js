@@ -139,24 +139,24 @@ router.get("/:videoID", validateJWT, async (req, res) => {
 });
 
 //! delete all of a users comments if the person deleting them is an admin
-router.delete("/:userID", validateJWT, async (req, res) => {
+router.delete("/:userId", validateJWT, async (req, res) => {
     const { userId } = req.params;
 
     try {
         const commentsSuccess = await CommentsModel.destroy
         ({
             where: {
-                userID: userId
+                userId: userId
             }
         });
         res.status(201).json({
-            message: "All comments for a specific user!",
+            message: "Deleted all comments for a specific user!",
             comments: commentsSuccess,
         });
     } catch (err) {
         res.status(500).json({
             messageError: `Error message is: ${err}`,
-            message: "Failed to get all comments for a specific user!",
+            message: "Failed to delete all comments for a specific user!",
         });
     }
 });
