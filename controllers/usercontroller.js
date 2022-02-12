@@ -108,6 +108,7 @@ router.post("/login", async (req, res) => {
 
 // Checking if their token is valid, if it is, then:
 router.post("/validate", validateJWT, async (req, res) => {
+    try {
     res.status(200).json({
         message: "Token is valid!",
         id: req.user.id,
@@ -115,13 +116,14 @@ router.post("/validate", validateJWT, async (req, res) => {
         username: req.user.username,
         isAdmin: req.user.isAdmin,
         status: 200
-    })
-        .catch(err => {
-            res.status(401).json({
-                message: "Token is invalid!",
-                status: 401
-            })
+    });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Failed to validate token!",
+            status: 500
         })
+    }
 });
 
 //! GET UserInfo if they are logged in
