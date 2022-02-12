@@ -8,7 +8,6 @@ const controllers = require("./controllers");
 const middleware = require("./middleware");
 
 // instantiation
-// const app = express();
 const app = express();
 
 // middleware
