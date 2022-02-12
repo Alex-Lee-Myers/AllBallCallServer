@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 // imports
+var cors = require('cors');
 const express = require('express');
 const dbConnection = require('./db');
 const controllers  = require('./controllers');
@@ -11,6 +12,7 @@ const middleware = require('./middleware');
 const app = express();
 
 // middleware
+app.options("*", cors());
 app.use(middleware.CORS);
 app.use(express.json());
 
