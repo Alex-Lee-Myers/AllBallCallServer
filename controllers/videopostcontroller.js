@@ -1,7 +1,7 @@
 const Express = require("express");
 const router = Express.Router();
 let validateJWT = require("../middleware/validate-session");
-const { VideoPostModel } = require("../models");
+const { VideoPostModel, UserModel, ReviewModel } = require("../models");
 const uuid = require("uuid");
 
 //! GET all video posts, no need for ValidateJWT
@@ -11,6 +11,11 @@ router.get("/content/all", async (req, res) => {
             where: {
                 adminDelete: false,
             },
+            include: [
+                {
+                    model: UserModel,
+                },
+            ],
         });
         res.status(200).json({
             message: "All Video Posts!",
@@ -109,6 +114,14 @@ router.get("/content/:userId/:videoID", validateJWT, async (req, res) => {
                 userId: userId,
                 videoID: videoID
             },
+            include: [
+                {
+                    model: UserModel,
+                },
+                {
+                    model: CommentModel,
+                }
+            ],
         });
         res.status(200).json({
             message: "Video Post successfully retrieved!",

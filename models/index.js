@@ -8,7 +8,6 @@ const CommentsModel = require('./commentsmodel');
 // const teamsArray = require('./teamsArray'); // uncomment this line if you want to use the teamsArray in lines 33-37
 const db = require('../db');
 // Make videoID definited as a UUID
-const uuid = require('uuid');
 
 
 //! Types of associations: (Start)

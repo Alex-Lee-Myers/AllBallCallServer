@@ -1,7 +1,7 @@
 const Express = require("express");
 const router = Express.Router();
 let validateJWT = require("../middleware/validate-session");
-const { CommentsModel } = require('../models');
+const { CommentsModel, VideoPostModel, UserModel } = require('../models');
 
 //! create a new comment for a specific video when the user submits a comment on the video when the user is logged in + validated
 router.post("/:videoID", validateJWT, async (req, res) => {
@@ -44,7 +44,15 @@ router.get("/:videoID/:commentID", validateJWT, async (req, res) => {
             where: {
                 videopostVideoID: videoID,
                 commentID: commentID
-            }
+            },
+            include: [
+                {
+                    model: UserModel,
+                },
+                {
+                    model: VideoPostModel,
+                }
+            ],
         });
         res.status(200).json({
             message: "Comment found!",
@@ -124,7 +132,15 @@ router.get("/:videoID", validateJWT, async (req, res) => {
         ({
             where: {
                 videopostVideoID: videoID
-            }
+            },
+            include: [
+                {
+                    model: UserModel,
+                },
+                {
+                    model: VideoPostModel,
+                }
+            ],
         });
         res.status(200).json({
             message: "All comments for a specific video!",
