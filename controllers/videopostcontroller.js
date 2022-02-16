@@ -155,25 +155,27 @@ router.put("/content/:userId/:videoID", validateJWT, async (req, res) => {
     const { userId, videoID } = req.params;
 
         const updateVideoPost = await VideoPostModel.update(
-            {
-                videoTitle: videoTitle,
-                videoLink: videoLink,
-                thumbnailImage: thumbnailImage,
-                playersHighlighted: playersHighlighted,
-                teamsFeatured: teamsFeatured,
-                tags: tags,
-                gameDate: gameDate,
-                nbaSeason: nbaSeason,
-                isPlayoffs: isPlayoffs,
-                clutch: clutch
-            },
-            {
-                where: {
-                    videoID: videoID,
-                    userId: userId
-                }
-            }
-        );
+					{
+						videoTitle: videoTitle,
+						videoLink: videoLink,
+						thumbnailImage: null,
+						playersHighlighted: null,
+						teamsFeatured: null,
+						tags: null,
+						gameDate: null,
+						nbaSeason: null,
+						isPlayoffs: null,
+						clutch: null,
+						adminHighlighted: false,
+						adminDelete: false,
+					},
+					{
+						where: {
+							videoID: videoID,
+							userId: userId,
+						},
+					}
+				);
         res.status(200).json({
             message: "Video Post successfully updated!",
             videopost: updateVideoPost,
