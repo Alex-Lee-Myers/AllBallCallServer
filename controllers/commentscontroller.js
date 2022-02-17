@@ -96,8 +96,7 @@ router.put("/:videoID/:commentID", validateJWT, async (req, res) => {
 
 //! delete a comment for a specific video from a specific user when they're validated with ValidateJWT from validate-session.js
 router.delete("/:videoID/:commentID", validateJWT, async (req, res) => {
-	const { commentID } = req.params;
-	const videoID = req.params.videopostVideoID;
+	const { commentID, videoID } = req.params;
 
 	try {
 		const commentSuccess = await CommentsModel.destroy({
