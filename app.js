@@ -1,9 +1,17 @@
 require("dotenv").config();
 const express = require("express");
+// const fetch = require("node-fetch");
+// globalThis.fetch = fetch;
 const app = express();
 var cors = require("cors");
+let whitelist = [
+	"http://localhost:3001",
+	"https://allballcall.herokuapp.com/",
+	"http://localhost:3000",
+];
 
 // imports
+app.use(cors({ origin: whitelist, credentials: true }));
 app.use(require('./middleware/headers'));
 app.use(cors());
 // const middleware = require("./middleware");
