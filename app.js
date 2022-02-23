@@ -1,31 +1,26 @@
 require("dotenv").config();
 const express = require("express");
-// const fetch = require("node-fetch");
-// globalThis.fetch = fetch;
+const cors = require("cors");
 const app = express();
-var cors = require("cors");
 let whitelist = [
 	"http://localhost:3001",
-	"https://allballcall.herokuapp.com/",
+	"https://allballcall.herokuapp.com/*",
 	"http://localhost:3000",
 ];
 
 // imports
 app.use(cors({ origin: whitelist, credentials: true }));
-app.use(require('./middleware/headers'));
-app.use(cors());
+// app.use(require('./middleware/headers'));
+// app.use(cors());
 // const middleware = require("./middleware");
 const dbConnection = require("./db");
 const controllers = require("./controllers");
-
-// middleware
-// app.options("*", cors());
 app.use(express.json());
 
 // endpoints
+// app.use(middleware.validateSession);
 app.use("/users", controllers.usercontroller);
 app.use("/videos", controllers.videopostcontroller);
-// app.use(middleware.validateSession);
 app.use("/comments", controllers.commentscontroller);
 
 // database auth & sync
