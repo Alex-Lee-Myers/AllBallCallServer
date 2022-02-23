@@ -1,4 +1,4 @@
-module.exports = {
-    CORS: require('./headers'),
-    validateSession: require('./validate-session')
-};
+// module.exports = {
+//     CORS: require('./headers'),
+//     validateSession: require('./validate-session')
+// };
