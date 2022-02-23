@@ -1,24 +1,23 @@
 require("dotenv").config();
+const express = require("express");
+const app = express();
+var cors = require("cors");
 
 // imports
-var cors = require("cors");
-const express = require("express");
+app.use(require('./middleware/headers'));
+app.use(cors());
+// const middleware = require("./middleware");
 const dbConnection = require("./db");
 const controllers = require("./controllers");
-const middleware = require("./middleware");
-
-// instantiation
-const app = express();
 
 // middleware
-app.options("*", cors());
-app.use(middleware.CORS);
+// app.options("*", cors());
 app.use(express.json());
 
 // endpoints
 app.use("/users", controllers.usercontroller);
 app.use("/videos", controllers.videopostcontroller);
-app.use(middleware.validateSession);
+// app.use(middleware.validateSession);
 app.use("/comments", controllers.commentscontroller);
 
 // database auth & sync
