@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 let whitelist = [
 	"http://localhost:3001",
-	"https://allballcall.herokuapp.com/*",
+	"https://allballcall.herokuapp.com",
 	"http://localhost:3000",
 ];
 
