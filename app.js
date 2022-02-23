@@ -7,7 +7,7 @@ let whitelist = [
 	"https://allballcall.herokuapp.com",
 	"http://localhost:3000",
 ];
-
+//? Added whitelist to allow CORS. This worked. 
 // imports
 app.use(cors({ origin: whitelist, credentials: true }));
 // app.use(require('./middleware/headers'));

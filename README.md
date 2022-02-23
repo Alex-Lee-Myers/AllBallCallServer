@@ -68,23 +68,25 @@ Indeed I am. Feel free to reach out to me via my [LinkedIn](https://www.linkedin
     - Test client-side register and login.
     - Start implementing ReactPlayer and testing its functionality to ready for server fetch.
 - **Week 2** (January 30th through February 5th, 2022)
-    - ...
-    - ...
-    - ...
+    - Setup possible Admin functionality that was later deprecated.
+    - Changed endpoints to reflect initial planning document.
 - **Week 3** (February 5th through February 12th, 2022)
-    - ...
-    - ...
-    - ...
+    - Admin functionality was now working.
+    - Users are able to edit their username, password, and email.
+    - Cleaned up route names to reflect front-end as well.
 - **Week 4** (February 12th through February 19th, 2022)
     - Head to San Diego...🌞⛱
-    - ...
-    - ...
-- **Week 5** (February 19th through February 22nd, 2022)
-    - ...
-    - ...
+    - Heroku deployed.
+    - Fixed CORS issue with pre-flights not accepting.
+    - Comments controller changed to be able to edit comments.
+    - User controller changed slightly to allow admin functionality.
+- **Week 5** (February 19th through February 24th, 2022)
+    - Ensured as much as possible it was working for presentation on Feb 22.
+    - Presentation Day: Ran into first-time issues during the presentation with CORS.
     - __Tuesday, February 22:__ Presentation Day
+    - Potentially fixed most, if not all, CORS issues on Heroku side the day after presentation.
 - **Continued Support** (March 2022 and beyond)
-    - ...
+    - No current future plans on server side. Will update as needed.
 
 ## Log
 
@@ -99,3 +101,14 @@ Indeed I am. Feel free to reach out to me via my [LinkedIn](https://www.linkedin
 | [*1/27/22* P.1](https://github.com/Alex-Lee-Myers/AllBallCallClient/commit/8c84411ec2918f78133e8edc4fdb866aafffdd1b)  | Tested ReactPlayer functionality. Minimal Tailwind UI integration with a card-style grid. Base structure working. Need to move to Home.tsx and then integrate fetching the server. |
 | [*1/27/22* P.2](https://github.com/Alex-Lee-Myers/AllBallCallClient/commit/142f52780f6baf70d168ccc10a470e8e4b03d40f)  | Started build up of Login UI. Needs a lot more work before functional. Additionally, did a copy-paste into Register file for a base start. Will touch that after Login finished. |
 | [*1/28/22*]() | Working on Login+Register further and testing. Navbar dropdown as well. |
+| [*2/2/22*](https://github.com/Alex-Lee-Myers/AllBallCallServer/commit/41f6809481fb72569347ecaff6f09ca8e5a45da5) | UserModel prepped with Admin functionality. Later deprecated. |
+| [*2/5/22*](https://github.com/Alex-Lee-Myers/AllBallCallServer/commit/09a1ed64ff4a3acb66b906473921e426aa1e9c80) | updated videopost and user models+controllers respectively to reflect changes in client. Admin registeration and login now functional. |
+| [*2/6/22*](https://github.com/Alex-Lee-Myers/AllBallCallServer/commit/b0ea7cc75bf7efc37aaf665aea2b12976fdece20) | updated usercontroller further to reflect the users ability to edit their account details between username, email, and password. |
+| [*2/10/22*](https://github.com/Alex-Lee-Myers/AllBallCallServer/commit/1d78130ebbc6467452d97dd695cb36acea1618d7) | fixed up route names to adjust to client side naming conventions. |
+| [*2/12/22*](https://github.com/Alex-Lee-Myers/AllBallCallServer/commit/09a1ed64ff4a3acb66b906473921e426aa1e9c80) | Heroku deployed on this day. Was running into CORS errors. They were all fixed by adding pre-flight acceptance from the cors npm package. |
+| [*2/13/22*](https://github.com/Alex-Lee-Myers/AllBallCallServer/commit/f43c444e776b49861d8ef100a66b709f7360933c) | Database Associations already were set in index on MVP, the controllers are now addressing those associations. |
+| [*2/14/22*](https://github.com/Alex-Lee-Myers/AllBallCallServer/commit/09a1ed64ff4a3acb66b906473921e426aa1e9c80) | Adjusted comments controller further for client-side flexibility. |
+| [*2/15/22*](https://github.com/Alex-Lee-Myers/AllBallCallServer/commit/2272acd61f41a8c7a51244d7fd4c90770026ec69) | updated comments controller to be more simplified for editing comments. commented out any further implementation. |
+| [*2/16/22*](https://github.com/Alex-Lee-Myers/AllBallCallServer/commit/63ff065262f4ac9ca320e17237137b37394b048f) | updated comment controller for front end variation. |
+| [*2/20/22*](https://github.com/Alex-Lee-Myers/AllBallCallServer/commit/f754728e1966359cdb6d7e3b139473bb107bb689) | updated for admin use cases on client side. |
+| [*2/23/22*](https://github.com/Alex-Lee-Myers/AllBallCallServer/commit/a019195d7fa404ec0f05c28419f8caf2e163cfdf) | Heroku client was running into CORS issues right in the middle of my presentation last night. For reference, it was the first time I ran into any CORS issues, and it happened to be in the middle of my presentation. Oh well! Demo day trials are like that sometimes. Ran multiple attempted fixes through Heroku and eventually found a fix with the use of whitelisting the client. It is now working on live Heroku build! Although, it seems on Logout() that a CORS error arises, but after refreshing it works again. |
